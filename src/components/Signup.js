@@ -1,17 +1,30 @@
-import React, {useRef} from 'react';
-import { Form, Card, Button } from 'react-bootstrap'
+import React, {useRef, useState} from 'react';
+import { Form, Card, Button, Alert } from 'react-bootstrap'
 import { useAuth } from '../contexts/AuthContext'
 
 export default function Signup() {
     const emailRef = useRef();
     const passwordRef = useRef();
     const passwordConfirmRef = useRef();
-    const { signup } = useAuth();
+    const { signup, currentUser } = useAuth();
+    const [ error, setError ] = useState('');
+    const [ loading, setLoading ] = useState(false);
 
-    function handleSubmit(e) {
+    async function handleSubmit(e) {
         e.preventDefault();
 
-        signup(emailRef.current.value, passwordRef.current.value);
+        if (passwordRef.current.value !== passwordConfirmRef.current.value) {
+          return setError('Passwords do not match')
+        }
+
+        try {
+          setError('');
+          setLoading(true);
+          await signup(emailRef.current.value, passwordRef.current.value);
+        } catch {
+          setError('Failed to create an account');
+        }
+        setLoading(false);
     }
 
     return (
@@ -19,7 +32,9 @@ export default function Signup() {
       <Card>
         <Card.Body>
             <h2 classname="text-center mb-4">Sign Up</h2>
-            <Form>
+            {currentUser.email}
+            {error && <Alert variant="danger">{error}</Alert>}
+            <Form onSubmit={handleSubmit}>
                 <Form.Group id="email">
                     <Form.Label>Email</Form.Label>
                     <Form.Control type="email" ref={emailRef} required />
@@ -32,7 +47,8 @@ export default function Signup() {
                     <Form.Label>Password Confirmation</Form.Label>
                     <Form.Control type="password" ref={passwordConfirmRef} required />
                 </Form.Group>
-                <Button className="w-100" type='submit'>
+                <p></p>
+                <Button disabled={loading} className="w-100" type='submit'>
                     Sign Up
                 </Button>
             </Form>

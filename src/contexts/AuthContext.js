@@ -12,6 +12,7 @@ export function useAuth() {
 export default function AuthProvider( {children }) {
 
     const [currentUser, setCurrentUser] = useState();
+    const [ loading, setLoading ] = useState(true);
 
     function signup(email, password) {
         return (createUserWithEmailAndPassword(auth, email, password))
@@ -22,7 +23,8 @@ export default function AuthProvider( {children }) {
             if (user) {
               // User is signed in, see docs for a list of available properties
               // https://firebase.google.com/docs/reference/js/firebase.User
-              const uid = user.uid;
+              setCurrentUser(user);
+              setLoading(false);
               // ...
             } else {
               // User is signed out
@@ -39,7 +41,7 @@ export default function AuthProvider( {children }) {
   
     return (
     <AuthContext.Provider value={value}>
-      {children}
+      {!loading && children}
     </AuthContext.Provider>
   );
 }
