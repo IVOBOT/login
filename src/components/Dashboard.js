@@ -11,6 +11,7 @@ export default function Dashboard() {
 
   function handleLogout () {
     setError("");
+    navigate("/login");
 
     logout().then(() => {
       // Sign-out successful.
