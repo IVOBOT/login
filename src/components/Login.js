@@ -22,7 +22,8 @@ export default function Login() {
         .catch((error) => {
           const errorCode = error.code;
           const errorMessage = error.message;
-          setError (errorCode, errorMessage);
+          //setError (errorCode, errorMessage);
+          setError ("Failed to login")
         });
         setLoading(false);
     }

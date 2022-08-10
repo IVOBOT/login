@@ -23,7 +23,8 @@ export default function ForgotPassword() {
         .catch((error) => {
           const errorCode = error.code;
           const errorMessage = error.message;
-          setError (errorCode, errorMessage);
+          //setError (errorCode, errorMessage);
+          setError ("Failed to reset password")
         });
         setLoading(false);
     }

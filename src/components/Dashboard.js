@@ -17,6 +17,7 @@ export default function Dashboard() {
       // Sign-out successful.
       navigate("/login");
     }).catch((error) => {
+      //setError (errorCode, errorMessage);
       setError('Failed to log out')
     });
   }
