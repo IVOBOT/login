@@ -16,7 +16,7 @@ function App() {
       <div className="w-100" style={{ maxWidth: "400px"}}>
         <AuthProvider>
           <Routes>
-            {/*<Route path="/" element={<Dashboard/>} />*/}
+            <Route path="/" element={<Dashboard/>} />
             <Route path="/signup" element={<Signup/>} />
             <Route path="/login" element={<Login/>} />
           </Routes>
