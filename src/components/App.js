@@ -5,7 +5,10 @@ import Signup from "./Signup";
 import Dashboard from "./Dashboard";
 import Login from "./Login";
 import { Routes, Route } from "react-router-dom";
-import PrivateRoute from "./PrivateRoute";
+import ForgotPassword from "./ForgotPassword";
+import UpdateProfile from "./UpdateProfile";
+import LoggedRoute from "./LoggedRoute";
+import NotLoggedRoute from "./NotLoggedRoute";
 
 function App() {
   return (
@@ -17,16 +20,37 @@ function App() {
       <div className="w-100" style={{ maxWidth: "400px"}}>
         <AuthProvider>
           <Routes>
-            
-            <Route path="/signup" element={<Signup/>} />
-            <Route path="/login" element={<Login/>} />
 
-            <Route
-              path="/"
-              element={
-                <PrivateRoute>
+            <Route exact path="/signup" element={
+                <LoggedRoute>
+                  <Signup />
+                </LoggedRoute>}
+            />
+            <Route path="/login" element={
+                <LoggedRoute>
+                  <Login />
+                </LoggedRoute>}
+            />
+            <Route path="/forgot-password" element={
+                // This page is available when logged in and when logged out
+                  <ForgotPassword />
+                }
+            />
+
+            <Route exact path="/" element={
+                <NotLoggedRoute>
                   <Dashboard />
-                </PrivateRoute>}
+                </NotLoggedRoute>}
+            />
+            <Route path="/update-profile" element={
+                <NotLoggedRoute>
+                  <UpdateProfile />
+                </NotLoggedRoute>}
+            />
+            <Route path="/dashboard" element={
+                <NotLoggedRoute>
+                  <Dashboard />
+                </NotLoggedRoute>}
             />
           </Routes>
         </AuthProvider>

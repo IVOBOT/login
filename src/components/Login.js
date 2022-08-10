@@ -14,24 +14,15 @@ export default function Login() {
     async function handleSubmit(e) {
         e.preventDefault();
 
-        /*try {
-          setError('');
-          setLoading(true);
-          await login(emailRef.current.value, passwordRef.current.value);
-        } catch {
-          alert (error.code);
-          //setError('Failed to sign in');
-        }*/
         login(emailRef.current.value, passwordRef.current.value).then((userCredential) => {
           // Signed in 
-          //const user = userCredential.user;
-          // ...
+          setLoading(true);
           navigate("/");
         })
         .catch((error) => {
           const errorCode = error.code;
           const errorMessage = error.message;
-          alert (errorCode, errorMessage);
+          setError (errorCode, errorMessage);
         });
         setLoading(false);
     }
@@ -56,6 +47,9 @@ export default function Login() {
                     Log In
                 </Button>
             </Form>
+            <div className='="w-100 text-center mt-3'>
+              <Link to="/forgot-password">Forgot password?</Link>
+            </div>
         </Card.Body>
       </Card>
       <div className='w-100 text-center mt-2'>
