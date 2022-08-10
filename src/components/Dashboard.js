@@ -30,6 +30,7 @@ export default function Dashboard() {
           {error && <Alert variant="danger">{error}</Alert>}
           <strong>Email: </strong>{currentUser.email}
           <Link to="/update-profile" className='btn btn-primary w-100 mt-3'>Update profile</Link>
+          <div className="text-center"><Link to="/delete-account" className='btn btn-outline-danger w-80 mt-3'>Delete account</Link></div>
         </Card.Body>
       </Card>
       <div className='w-100 text-center mt-2'>

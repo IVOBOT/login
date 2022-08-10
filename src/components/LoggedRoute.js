@@ -7,7 +7,10 @@ const LoggedRoute = function ({ children }) {
   if (!currentUser) {
     return children;
   } else {
-    return <Navigate to="/" replace />;
+    const emailVerified = currentUser.emailVerified;
+    if ( emailVerified ) {
+      return <Navigate to="/" replace />;
+    }
   }
 };
 

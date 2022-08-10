@@ -9,6 +9,7 @@ import ForgotPassword from "./ForgotPassword";
 import UpdateProfile from "./UpdateProfile";
 import LoggedRoute from "./LoggedRoute";
 import NotLoggedRoute from "./NotLoggedRoute";
+import DeleteAccount from "./DeleteAccount"
 
 function App() {
   return (
@@ -50,6 +51,11 @@ function App() {
             <Route path="/dashboard" element={
                 <NotLoggedRoute>
                   <Dashboard />
+                </NotLoggedRoute>}
+            />
+            <Route exact path="/delete-account" element={
+                <NotLoggedRoute>
+                  <DeleteAccount />
                 </NotLoggedRoute>}
             />
           </Routes>

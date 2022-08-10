@@ -2,13 +2,16 @@ import React, {useRef, useState} from 'react';
 import { Form, Card, Button, Alert } from 'react-bootstrap'
 import { useAuth } from '../contexts/AuthContext'
 import { Link, useNavigate } from 'react-router-dom'
+import { sendEmailVerification, emailVerified } from "firebase/auth";
+import { auth } from '../firebase'
 
 export default function Signup() {
     const emailRef = useRef();
     const passwordRef = useRef();
     const passwordConfirmRef = useRef();
-    const { signup } = useAuth();
+    const { signup, logout } = useAuth();
     const [ error, setError ] = useState('');
+    const [ message, setMessage ] = useState('');
     const [ loading, setLoading ] = useState(false);
     const navigate = useNavigate();
 
@@ -21,8 +24,19 @@ export default function Signup() {
 
         signup(emailRef.current.value, passwordRef.current.value).then((userCredential) => {
           // Signed in 
+          const currentUser = userCredential.user;
+          const emailVerified = currentUser.emailVerified;
           setLoading(true);
-          navigate("/");
+          sendEmailVerification(auth.currentUser)
+          .then(() => {
+            // Email verification sent
+            logout();
+            navigate("/login")
+            setMessage ("Email verification sent!")
+            /*if (emailVerified) {
+              navigate("/");
+            }*/
+          });
         })
         .catch((error) => {
           const errorCode = error.code;
@@ -39,6 +53,7 @@ export default function Signup() {
         <Card.Body>
             <h2 classname="text-center mb-4">Sign Up</h2>
             {error && <Alert variant="danger">{error}</Alert>}
+            {message && <Alert variant="success">{message}</Alert>}
             <Form onSubmit={handleSubmit}>
                 <Form.Group id="email">
                     <Form.Label>Email</Form.Label>

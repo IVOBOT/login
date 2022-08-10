@@ -5,7 +5,10 @@ import { useAuth } from "../contexts/AuthContext";
 const NotLoggedRoute = function ({ children }) {
   const { currentUser } = useAuth();
   if (currentUser) {
-    return children;
+    const emailVerified = currentUser.emailVerified;
+    if ( emailVerified ) {
+      return children;
+    }
   } else {
     return <Navigate to="/login" replace />;
   }

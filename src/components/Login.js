@@ -2,12 +2,14 @@ import React, {useRef, useState} from 'react';
 import { Form, Card, Button, Alert } from 'react-bootstrap'
 import { useAuth } from '../contexts/AuthContext'
 import { Link, useNavigate } from 'react-router-dom'
+import { emailVerified } from "firebase/auth";
 
 export default function Login() {
     const emailRef = useRef();
     const passwordRef = useRef();
     const { login } = useAuth();
     const [ error, setError ] = useState('');
+    const [ message, setMessage ] = useState('');
     const [ loading, setLoading ] = useState(false);
     const navigate = useNavigate();
 
@@ -17,7 +19,14 @@ export default function Login() {
         login(emailRef.current.value, passwordRef.current.value).then((userCredential) => {
           // Signed in 
           setLoading(true);
-          navigate("/");
+          if (userCredential.user.emailVerified) 
+          {
+            navigate("/");
+          }
+          else
+          {
+            setError("Verify your email");
+          }
         })
         .catch((error) => {
           const errorCode = error.code;
@@ -34,6 +43,7 @@ export default function Login() {
         <Card.Body>
             <h2 classname="text-center mb-4">Log In</h2>
             {error && <Alert variant="danger">{error}</Alert>}
+            {message && <Alert variant="success">{message}</Alert>}
             <Form onSubmit={handleSubmit}>
                 <Form.Group id="email">
                     <Form.Label>Email</Form.Label>
