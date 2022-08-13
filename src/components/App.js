@@ -22,10 +22,9 @@ function App() {
         <AuthProvider>
           <Routes>
 
-            <Route exact path="/signup" element={
-                <LoggedRoute>
+            <Route path="/signup" element={
                   <Signup />
-                </LoggedRoute>}
+                }
             />
             <Route path="/login" element={
                 <LoggedRoute>

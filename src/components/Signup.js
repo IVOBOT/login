@@ -31,8 +31,8 @@ export default function Signup() {
           .then(() => {
             // Email verification sent
             logout();
-            navigate("/login")
             setMessage ("Email verification sent!")
+            //navigate("/login");
             /*if (emailVerified) {
               navigate("/");
             }*/

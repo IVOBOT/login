@@ -2,12 +2,12 @@ import React, {useRef, useState} from 'react';
 import { Form, Card, Button, Alert } from 'react-bootstrap'
 import { useAuth } from '../contexts/AuthContext'
 import { Link, useNavigate } from 'react-router-dom'
-import { emailVerified } from "firebase/auth";
+import LoggedRoute from './LoggedRoute';
 
 export default function Login() {
     const emailRef = useRef();
     const passwordRef = useRef();
-    const { login } = useAuth();
+    const { login, logout } = useAuth();
     const [ error, setError ] = useState('');
     const [ message, setMessage ] = useState('');
     const [ loading, setLoading ] = useState(false);
@@ -26,6 +26,7 @@ export default function Login() {
           else
           {
             setError("Verify your email");
+            //logout();
           }
         })
         .catch((error) => {

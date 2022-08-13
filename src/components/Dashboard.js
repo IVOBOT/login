@@ -28,9 +28,10 @@ export default function Dashboard() {
         <Card.Body>
           <h2 classname="text-center mb-4">Profile</h2>
           {error && <Alert variant="danger">{error}</Alert>}
-          <strong>Email: </strong>{currentUser.email}
+          <strong>Email: </strong>{currentUser.email}<br></br>
+          <strong>Email verified: </strong>{currentUser.emailVerified.toString()}
           <Link to="/update-profile" className='btn btn-primary w-100 mt-3'>Update profile</Link>
-          <div className="text-center"><Link to="/delete-account" className='btn btn-outline-danger w-80 mt-3'>Delete account</Link></div>
+          <Link to="/delete-account" className='btn btn-outline-danger w-100 mt-3'>Delete account</Link>
         </Card.Body>
       </Card>
       <div className='w-100 text-center mt-2'>

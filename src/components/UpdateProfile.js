@@ -2,9 +2,11 @@ import React, {useRef, useState} from 'react';
 import { Form, Card, Button, Alert } from 'react-bootstrap'
 import { useAuth } from '../contexts/AuthContext'
 import { Link, useNavigate } from 'react-router-dom'
+import { EmailAuthProvider, reauthenticateWithCredential } from 'firebase/auth';
 
 export default function UpdateProfile() {
     const emailRef = useRef();
+    const oldPasswordRef = useRef();
     const passwordRef = useRef();
     const passwordConfirmRef = useRef();
     const { currentUser, updateE, updateP } = useAuth();
@@ -15,27 +17,39 @@ export default function UpdateProfile() {
     function handleSubmit(e) {
         e.preventDefault();
 
-        if (passwordRef.current.value !== passwordConfirmRef.current.value) {
-          return setError('Passwords do not match')
-        }
+        const authCredential = EmailAuthProvider.credential(currentUser.email, oldPasswordRef.current.value);
 
-        setLoading(true)
-        setError("");
-        const promises = []
-
-        if (emailRef.current.value !== currentUser.email) {
-            promises.push(updateE(emailRef.current.value))
-        }
-        if (passwordRef.current.value) {
-            promises.push(updateP(passwordRef.current.value))
-        }
-        Promise.all(promises).then(() => {
-            navigate("/");
-        }).catch(() => {
-            setError("Failed to update account")
+        reauthenticateWithCredential(currentUser, authCredential).then(() => {
+            
+            if (passwordRef.current.value !== passwordConfirmRef.current.value) {
+                return setError('Passwords do not match')
+            }
+    
+            setLoading(true)
+            setError("");
+            const promises = []
+    
+            if (emailRef.current.value !== currentUser.email) {
+                promises.push(updateE(emailRef.current.value))
+            }
+            if (passwordRef.current.value) {
+                promises.push(updateP(passwordRef.current.value))
+            }
+            Promise.all(promises).then(() => {
+                navigate("/");
+            }).catch(() => {
+                setError("Failed to update account")
+            }).finally(() => {
+                setLoading(false);
+            })
+            
+        }).catch((error) => {
+            return setError("Failed to update account")
         }).finally(() => {
             setLoading(false);
         })
+
+        
     }
 
     return (
@@ -48,6 +62,10 @@ export default function UpdateProfile() {
                 <Form.Group id="email">
                     <Form.Label>Email</Form.Label>
                     <Form.Control type="email" ref={emailRef} required defaultValue={currentUser.email}/>
+                </Form.Group>
+                <Form.Group id="password">
+                    <Form.Label>Old password</Form.Label>
+                    <Form.Control type="password" ref={oldPasswordRef} required placeholder='Required'/>
                 </Form.Group>
                 <Form.Group id="password">
                     <Form.Label>Password</Form.Label>
