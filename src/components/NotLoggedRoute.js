@@ -4,8 +4,9 @@ import { useAuth } from "../contexts/AuthContext";
 
 const NotLoggedRoute = function ({ children }) {
   const { currentUser } = useAuth();
+  const emailVerified = currentUser.emailVerified;
+  
   if (currentUser) {
-    const emailVerified = currentUser.emailVerified;
     if ( emailVerified ) {
       return children;
     }
