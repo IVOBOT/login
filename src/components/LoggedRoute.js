@@ -4,11 +4,11 @@ import { useAuth } from "../contexts/AuthContext";
 
 const LoggedRoute = function ({ children }) {
   const { currentUser } = useAuth();
-  const emailVerified = currentUser.emailVerified;
   
   if (!currentUser) {
     return children;
   } else {
+    const emailVerified = currentUser.emailVerified;
     if ( emailVerified ) {
       return <Navigate to="/" replace />;
     }
